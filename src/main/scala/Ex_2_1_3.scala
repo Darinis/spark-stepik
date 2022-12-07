@@ -37,4 +37,5 @@ object Ex_2_1_3 extends App {
     .load("src/main/resources/restaurant_ex.json")
 
   df.printSchema()
+  df.show(3)
 }
