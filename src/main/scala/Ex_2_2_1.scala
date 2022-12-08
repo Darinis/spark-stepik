@@ -1,5 +1,5 @@
-import org.apache.spark.sql.SparkSession
 import org.apache.spark.SparkContext
+import org.apache.spark.sql.SparkSession
 
 //case object spark {
 //  lazy val ss: SparkSession = SparkSession.builder()
@@ -11,6 +11,7 @@ import org.apache.spark.SparkContext
 //}
 
 object Ex_2_2_1 extends App {
+  import org.apache.spark.sql.SaveMode
   import org.apache.spark.sql.types._
 
   val moviesSchema = StructType(Seq(
@@ -40,6 +41,7 @@ object Ex_2_2_1 extends App {
 
   movies.printSchema()
   movies.write
-    .mode("overwrite") //не сработал вариант .mode(SaveMode.Overwrite) - уточните, пожалуйста, что следует сделать, для этого или это из-за IDEA?
+    //.mode("overwrite") //не сработал вариант .mode(SaveMode.Overwrite) - уточните, пожалуйста, что следует сделать, для этого или это из-за IDEA?
+    .mode(SaveMode.Overwrite)
     .save("src/main/resources/data/file.parquet")
 }
