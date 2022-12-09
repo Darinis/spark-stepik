@@ -24,11 +24,17 @@ object Ex_2_3_DFs_columns_1 extends App {
   import org.apache.spark.sql.functions._
 
   val bikeSharingDF = spark.ss.read
+    .option("inferSchema","true")
     .option("header","true")
     .csv("src/main/resources/bike_sharing.csv")
 
-  val DFselect = bikeSharingDF.select(col("Hour"),col("TEMPERATURE"),col("HUMIDITY"),col("WIND_SPEED"))
+  val selectDF = bikeSharingDF.select(
+    "Hour",
+    "TEMPERATURE",
+    "HUMIDITY",
+    "WIND_SPEED"
+  )
 
-  DFselect.printSchema()
-  DFselect.show(3)
+  selectDF.printSchema()
+  selectDF.show(3)
 }
