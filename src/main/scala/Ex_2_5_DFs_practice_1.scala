@@ -22,23 +22,24 @@ object Ex_2_5_DFs_practice_1 extends App {
 
   customersDF.printSchema()
 
-  val ageCondition = col("Age") between(30,35)
-  val genderCode = col("Gender") === "Male"
+  val hasProperAge = col("Age").between(30, 35)
+  val isMale = col("Gender") === "Male"
+  val columns = Seq(col("Gender"), col("Age"))
 
   val incomeDF = customersDF
-    .filter(ageCondition)
-    .groupBy("Gender","Age")
+    .filter(hasProperAge)
+    .groupBy(columns: _*)
     .agg(
       round(avg("Annual Income (k$)"),1).as("avg_income"))
-    .orderBy("Gender","Age")
+    .orderBy(columns: _*)
     .withColumn("gender_code",
-      when(genderCode,1).otherwise(0)
+      when(isMale,1).otherwise(0)
     )
 
   incomeDF.printSchema()
-//  incomeDF.show(false)
+  incomeDF.show(false)
 
   incomeDF.write
     .mode(SaveMode.Overwrite)
-    .save("src/main/resources/data/customers/file.parquet")
+    .save("src/main/resources/data/customers")
 }
